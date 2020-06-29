@@ -1,0 +1,101 @@
+@import url("https://use.fontawesome.com/releases/v5.8.2/css/all.css");
+
+::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: rgb(49, 48, 48);
+}
+
+body {
+  scrollbar-width: none;
+  background: #007bff;
+  background: linear-gradient(to right, #0062e6, #33aeff);
+  /* background: url("/static/img/bg.jpg") no-repeat; */
+}
+
+.data {
+  margin-top: 40px;
+}
+
+.data-content {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.mdl-layout__tab-bar {
+  background-color: black;
+}
+
+.mdl-layout__header {
+  background-color: black;
+}
+
+.texts {
+  color: white;
+}
+
+[data-toggle="collapse"] .fa:before {
+  content: "\f106";
+}
+
+[data-toggle="collapse"].collapsed .fa:before {
+  content: "\f107";
+}
+
+.query-card {
+  margin-bottom: 15px;
+}
+
+.btn {
+  box-shadow: none !important;
+}
+
+.chat_display {
+  height: 80vh;
+}
+
+.chat_container {
+  height: 100%;
+}
+
+#message_screen {
+  height: 100%;
+  overflow: auto;
+}
+
+.msg_compose {
+  padding: 0%;
+  display: contents;
+  text-align: center;
+}
+
+.msg_compose button {
+  padding: 0%;
+}
+
+.msg_compose button i {
+  font-size: 36px;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;
+  background-color: #d3d3d3;
+  height: 1px;
+}
+
+.tag_texts {
+  color: #d3d3d3;
+}

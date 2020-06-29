@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-3 mb-5">
+    <a class="navbar-brand" href="#">
+        <h1 class="display-4 texts">Legal Dashboard</h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="mr-auto"></div>
+        <ul class="navbar-nav">
+            <li class="nav-item nav_list_items">
+                <a class="nav-link" href="{{ url_for('auth') }}">Queries <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active nav_list_items">
+                <a class="nav-link" href="{{ url_for('history') }}">History</a>
+            </li>
+            <li class="nav-item nav_list_items">
+                <a class="nav-link" href="{{ url_for('call_requests') }}">Call Requests</a>
+            </li>
+            <li class="nav-item dropdown nav_list_items">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    {{ user_cred['name'] }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Update Email</a>
+                    <a class="dropdown-item" href="#">Update Password</a>
+                    <a class="dropdown-item" href="#">Write to superadmin</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" style="color: red;" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% for ticket in user_cred['message_data'] %}
+<div class="row">
+    <div class="col col-md-1"></div>
+    <div class="card query-card col col-md-10">
+        <div class="card-body pb-1">
+            <div class="row">
+                <div class="col col-md-4 history_content">
+                    <h4 class="card-title font-weight-bold" data-content="username">
+                        {{ ticket['ticket_id']}}
+                    </h4>
+                </div>
+
+                <div class="col col-md-4 history_content">
+                    <p class="lead" data-content="uid">{{ ticket['username'] }}</p>
+                </div>
+                <div class="col col-md-4 history_content">
+                    <p class="card-text" data-content="uid"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="collapse-content">
+            <div class="collapse" id="{{ ticket['ticket_id'] }}"
+                data-template-bind='[{"attribute": "id", "value": "uid"}]'>
+                <p>Hello</p>
+            </div>
+
+            <hr class="" />
+            <center>
+                <div class="col_button"><button class="btn btn-link collapsed" id="cbut" data-toggle="collapse"
+                        href="#{{ ticket['ticket_id'] }}" aria-expanded="false"
+                        aria-controls="{{ ticket['ticket_id'] }}"
+                        data-template-bind='[{"attribute": "aria-controls", "value": "uid"},{"attribute": "href", "value": "hrefid"}]'><i
+                            class="fa fa-2x"></i></button></div>
+            </center>
+        </div>
+    </div>
+    <div class="col col-md-1"></div>
+</div>
+{% endfor %}
+{% endblock %}

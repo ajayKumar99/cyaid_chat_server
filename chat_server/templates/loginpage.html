@@ -1,0 +1,44 @@
+{% extends 'layout.html' %} {% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-3 mb-5">
+  <h1 class="display-4 texts">SuperAdmin Dashboard</h1>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5 shadow">
+        <div class="card-body">
+          <h5 class="card-title text-center">Sign In</h5>
+          <form class="form-signin" action="/login" method="POST" role="form">
+            <div class="form-label-group">
+              <label for="inputEmail">Admin Name</label>
+              <input type="text" id="inputEmail" class="form-control" placeholder="Admin username" name="email" required
+                autofocus />
+            </div>
+
+            <div class="form-label-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="roomid"
+                required />
+            </div>
+
+            <div class="custom-control custom-checkbox mb-3">
+              <input type="checkbox" class="custom-control-input" id="customCheck1" />
+              <label class="custom-control-label" for="customCheck1">Remember password</label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+              Sign in
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

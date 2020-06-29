@@ -1,0 +1,65 @@
+<script>
+  cbut = document.getElementById("cbut");
+  $(document).ready(function () {
+    // Add minus icon for collapse element which is open by default
+    $(".collapse.show").each(function () {
+      $(this)
+        .prev(".collapse-content")
+        .find(".fas")
+        .addClass("fa-angle-up")
+        .removeClass("fa-angle-down");
+    });
+
+    // Toggle plus minus icon on show hide of collapse element
+    $(".collapse")
+      .on("show.bs.collapse", function () {
+        $(this)
+          .prev(".collapse-content")
+          .find(".fas")
+          .removeClass("fa-angle-up")
+          .addClass("fa-angle-down");
+      })
+      .on("hide.bs.collapse", function () {
+        $(this)
+          .prev(".collapse-content")
+          .find(".fas")
+          .removeClass("fa-angle-down")
+          .addClass("fa-angle-up");
+      });
+  });
+  // if (cbut.classList.contains("collapsed")) {
+  //   cbut.innerHTML =
+  //     '<i class="fas fa-angle-down" data-toggle="collapse"></i>';
+  // } else {
+  //   cbut.innerHTML = '<i class="fas fa-angle-up" data-toggle="collapse"></i>';
+  // }
+  // cbut.onclick = function () {
+  //   if (cbut.classList.contains("collapsed")) {
+  //     cbut.innerHTML =
+  //       '<i class="fas fa-angle-up" data-toggle="collapse"></i>';
+  //   } else {
+  //     cbut.innerHTML =
+  //       '<i class="fas fa-angle-down" data-toggle="collapse"></i>';
+  //   }
+  // };
+  // e = document.getElementById("query_queue");
+  // var child = e.lastElementChild;
+  // while (child) {
+  //   e.removeChild(child);
+  //   child = e.lastElementChild;
+  // }
+  // users.forEach((user, i) => {
+  //   const newNode = document.createElement("div");
+  //   newNode.innerHTML = `<li id="${user}"><b>${user}</b>&nbsp;&nbsp&nbsp;&nbsp<button id="respond_query">Respond</button></li>`;
+  //   document.getElementById("query_queue").appendChild(newNode);
+  //   let respond_btn = document.getElementById("respond_query");
+  //   respond_btn.onclick = function (event) {
+  //     console.log(window.location.origin + "/chat_handler/" + user);
+  //     var win = window.open(
+  //       window.location.origin + "/chat_handler/" + user,
+  //       "_blank"
+  //     );
+  //     win.focus();
+  //   };
+  // });
+</script>

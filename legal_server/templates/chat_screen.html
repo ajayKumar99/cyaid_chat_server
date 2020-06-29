@@ -1,0 +1,110 @@
+{% extends 'layout.html' %} {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-3 mb-5">
+  <div class="row" style="width: 100%; display: contents;">
+    <div class="col-2">
+      <h4 class="texts">{{ ticket_cred['p_username'] }}</h4>
+    </div>
+    <div class="col-2">
+      <p class="lead texts">{{ ticket_cred['user_email'] }}</p>
+    </div>
+    <div class="col-8 text-right">
+      <button type="button" class="btn btn-warning btn-rounded" id="ticket_close">
+        Close Ticket
+      </button>
+      <button type="button" class="btn btn-danger btn-rounded" id="report_btn">
+        Report User
+      </button>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col col-1"></div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body chat_display">
+          <div class="d-flex flex-column chat_container">
+            <div class="d-flex flex-column-reverse" id="message_screen">
+              <div id="message_queue" class="d-flex flex-column-reverse"></div>
+            </div>
+            <hr class="my-4" />
+            <div class="mt-auto p-2" id="msg_box">
+              <form id="msg_form">
+                <div class="row">
+                  <div class="col">
+                    <input class="form-control form-control-lg" type="text" placeholder="Send Message" id="msg" />
+                  </div>
+                  <div class="col col-1 msg_compose">
+                    <button class="btn btn-link" type="submit">
+                      <i class="material-icons">send</i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col col-1"></div>
+  </div>
+</div>
+<script>
+  const socket = io.connect("https://cyaid.hackdevtechnology.com");
+  socket.on("connect", function () {
+    socket.emit("messaging_handle_join", {
+      type: "legal_id",
+      username: "{{ ticket_cred['username'] }}",
+      user_id: "{{ ticket_cred['user_id'] }}",
+      legal_id: "{{ ticket_cred['legal_id'] }}",
+      ticket_id: "{{ ticket_cred['ticket_id'] }}",
+      timestamp: Date.now(),
+    });
+  });
+
+  let msg_inp = document.getElementById("msg");
+  document.getElementById("msg_form").onsubmit = function (e) {
+    e.preventDefault();
+    let msg = msg_inp.value.trim();
+    if (msg.length) {
+      socket.emit("chats", {
+        username: "{{ ticket_cred['username'] }}",
+        legal_id: "{{ ticket_cred['legal_id'] }}",
+        user_id: "{{ ticket_cred['user_id'] }}",
+        type: "legal_id",
+        ticket_id: "{{ ticket_cred['ticket_id'] }}",
+        timestamp: Date.now(),
+        msg: msg,
+      });
+    }
+  };
+
+  socket.on("messaging_handle", function (data) {
+    const newNode = document.createElement("div");
+    if (data["type"] == "legal_id") {
+      newNode.setAttribute("class", "d-flex flex-row-reverse");
+      newNode.innerHTML = `<div class="talk-bubble ${data["type"]} tri-right right-top"><div class="talktext"><b>${data["id"]}</b>&nbsp;&nbsp<i>${data["msg"]}</i></div></div>`;
+    } else {
+      newNode.setAttribute("class", "d-flex flex-row");
+      newNode.innerHTML = `<div class="talk-bubble ${data["type"]} tri-right left-top"><div class="talktext"><b>${data["id"]}</b>&nbsp;&nbsp<i>${data["msg"]}</i></div></div>`;
+    }
+    msg_screen = document.getElementById("message_queue");
+    msg_screen.prepend(newNode);
+    $("#message_screen").animate(
+      {
+        scrollTop: $("#message_queue").height(),
+      },
+      1000
+    );
+  });
+
+  close_ticket = document.getElementById("ticket_close");
+  close_ticket.onclick = function () {
+    console.log("close ticket");
+    socket.emit("close_ticket", {
+      ticket_id: '{{ ticket_cred["ticket_id"] }}',
+    });
+    window.close();
+  };
+</script>
+{% endblock %}

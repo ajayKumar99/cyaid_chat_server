@@ -1,0 +1,144 @@
+{% extends 'layout.html' %} {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-3 mb-5">
+    <a class="navbar-brand" href="#">
+        <h1 class="display-4 texts">Legal Dashboard</h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="mr-auto"></div>
+        <ul class="navbar-nav">
+            <li class="nav-item active nav_list_items">
+                <a class="nav-link" href="{{ url_for('auth') }}">Queries <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item nav_list_items">
+                <a class="nav-link" href="{{ url_for('history') }}">History</a>
+            </li>
+            <li class="nav-item nav_list_items">
+                <a class="nav-link" href="{{ url_for('call_requests') }}">Call Requests</a>
+            </li>
+            <li class="nav-item dropdown nav_list_items">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    {{ user_cred['name'] }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Update Email</a>
+                    <a class="dropdown-item" href="#">Update Password</a>
+                    <a class="dropdown-item" href="#">Write to superadmin</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" style="color: red;" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div id="template-container" class="justify-content-between"></div>
+</div>
+<script>
+    window.appConfig = {
+        username: "{{ user_cred['name'] }}",
+        room: "{{ user_cred['room'] }}",
+    };
+</script>
+<script id="template" type="text/html">
+          <div class="card query-card">
+            <div class="card-body pb-1">
+                <div class="row">
+                    <div class="col col-md-8">
+                        <h4 class="card-title font-weight-bold" data-content="username"></h4>
+                    </div>
+                    <div class="col-6 col-md-4 text-right">
+                        <button type="button" class="btn btn-success btn-rounded" id="" data-template-bind='[{"attribute": "id", "value": "ticket_id"}]'>
+                            Assign
+          </button>
+                        <button type="button" class="btn btn-dark btn-rounded" data-toggle="modal" data-target="#exampleModalCenter">
+                            Pass
+          </button>
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <form id="pass_legal">
+
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Pass Ticket</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body" style="text-align: left;" id="legals">
+                                      {% for legal in user_cred['legals_data'] %}
+
+                                      <div class="custom-control custom-radio">
+      <div class="row">
+          <div class="col">
+                    <input type="radio" class="custom-control-input" id="{{ legal['id'] }}" value="{{ legal['id'] }}" name="" data-template-bind='[{"attribute": "name", "value": "ticket_id"}]'>
+
+      <label class="custom-control-label lead" for="{{ legal['id'] }}"><b>{{ legal['name'] }}</b></label>
+          </div>
+          <div class="col">
+      <p class="lead">{{ legal['id'] }}</p>
+          </div>
+  </div>
+    </div>
+                                      {% endfor %}
+                </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="" class="btn btn-secondary" data-dismiss="modal" id="pass_form_btn" data-template-bind='[{"attribute": "name", "value": "ticket_id"}]'>Pass</button>
+                                        <button type="button" class="btn btn-primary">Pass Randomly</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v fa-lg"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button class="dropdown-item" type="button">Report User</button>
+                                <button class="dropdown-item" type="button">Dismiss Query</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="card-text" data-content="uid"></p>
+                <p class="card-text" data-content="email"></p>
+                <div class="d-flex justify-content-between">
+                </div>
+            </div>
+
+            <div class="collapse-content">
+                <div class="collapse" id="collapseExample" data-template-bind='[{"attribute": "id", "value": "uid"}]'>
+                    
+                </div>
+
+                <hr class="" />
+                <center><div class="col_button"><button
+                    class="btn btn-link collapsed"
+                    id="cbut"
+                    data-toggle="collapse"
+                    href="#collapseExample"
+                    aria-expanded="false"
+                    aria-controls="collapseExample"
+                    data-template-bind='[{"attribute": "aria-controls", "value": "uid"},{"attribute": "href", "value": "hrefid"}]'
+                ><i class="fa fa-2x"></i></button></div></center>
+            </div>
+        </div>
+              </div >
+</script>
+
+<script></script>
+
+<script src="{{ url_for('static', filename='js/socket_handler.js') }}"></script>
+
+{% endblock %}

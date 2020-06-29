@@ -1,0 +1,60 @@
+{% extends 'layout.html' %} {% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-3 mb-5">
+  <h1 class="display-4 texts">Legal Dashboard</h1>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+<div class="container-fluid">
+  <form id="msg_form">
+    <input type="text" name="message" id="msg" />
+    <button type="submit" id="sub">Send</button>
+  </form>
+
+  <br />
+  <ul id="message_queue"></ul>
+</div>
+<script>
+  const socket = io.connect("http://192.168.1.201:5000");
+  socket.on("connect", function () {
+    socket.emit("messaging_handle_join", {
+      type: "legal_id",
+      username: "{{ ticket_cred['username'] }}",
+      user_id: "{{ ticket_cred['user_id'] }}",
+      legal_id: "{{ ticket_cred['legal_id'] }}",
+    });
+  });
+
+  let msg_inp = document.getElementById("msg");
+  document.getElementById("msg_form").onsubmit = function (e) {
+    e.preventDefault();
+    let msg = msg_inp.value.trim();
+
+    if (msg.length) {
+      socket.emit("chats", {
+        username: "{{ ticket_cred['username'] }}",
+        legal_id: "{{ ticket_cred['legal_id'] }}",
+        user_id: "{{ ticket_cred['user_id'] }}",
+        type: "legal_id",
+        msg: msg,
+      });
+    }
+  };
+
+  socket.on("messaging_handle", function (data) {
+    console.log(data);
+    const newNode = document.createElement("div");
+    newNode.innerHTML = `<li><b>${data["id"]}</b>&nbsp;&nbsp<i>${data["msg"]}</i></li>`;
+    document.getElementById("message_queue").appendChild(newNode);
+  });
+</script>
+{% endblock %}

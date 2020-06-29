@@ -1,0 +1,111 @@
+{% extends "layout.html" %} {% block content %}
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <h1 class="display-4">SuperAdmin Dashboard</h1>
+    </div>
+    <!-- Tabs -->
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">SuperAdmin</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="{{ url_for('auth') }}">Home</a>
+      <a class="mdl-navigation__link" href="">Reported Queries</a>
+      <a class="mdl-navigation__link" href="{{ url_for('manage_tickets') }}"
+        >Manage Tickets</a
+      >
+      <a class="mdl-navigation__link" href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="page-content">
+      <div class="accordion" id="accordionExample">
+        {% for data in payload %}
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="card data">
+              <div class="card-header" id="id-{{ data['ticket_id'] }}">
+                <div class="row">
+                  <div class="col-3">
+                    <center>
+                      <p class="h5"><b>Ticket Id</b></p>
+                    </center>
+                  </div>
+                  <div class="col-3">
+                    <center>
+                      <p class="h5"><b>User</b></p>
+                    </center>
+                  </div>
+                  <div class="col-3">
+                    <center>
+                      <p class="h5"><b>Legal Assigned</b></p>
+                    </center>
+                  </div>
+                  <div class="col-3">
+                    <center>
+                      <p class="h5"><b>Status</b></p>
+                    </center>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-3">
+                    <center>
+                      <p class="lead">{{ data['ticket_id'] }}</p>
+                    </center>
+                  </div>
+                  <div class="col-3">
+                    <center>
+                      <p class="lead">{{ data['username'] }}</p>
+                    </center>
+                  </div>
+                  <div class="col-3">
+                    <center>
+                      <p class="lead">{{ data['legal'] }}</p>
+                    </center>
+                  </div>
+                  <div class="col-3">
+                    <center>
+                      <p class="lead">{{ data['status'] }}</p>
+                    </center>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-5"></div>
+                  <div class="col-2">
+                    <center>
+                      <button
+                        class="btn btn-dark"
+                        data-toggle="collapse"
+                        data-target="#{{ data['ticket_id'] }}"
+                      >
+                        View messages
+                      </button>
+                    </center>
+                  </div>
+                  <div class="col-5"></div>
+                </div>
+                <div
+                  id="{{ data['ticket_id'] }}"
+                  class="collapse"
+                  aria-labelledby="id-{{ data['ticket_id'] }}"
+                  data-parent="#accordionExample"
+                >
+                  <div class="card-body">
+                    {{ data['messages'] }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

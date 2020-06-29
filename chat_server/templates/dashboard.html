@@ -1,0 +1,173 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <h1 class="display-4">SuperAdmin Dashboard</h1>
+    </div>
+    <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#fixed-tab-1" class="mdl-layout__tab is-active">Public Users</a>
+      <a href="#fixed-tab-2" class="mdl-layout__tab">Legal Users</a>
+      <a href="#fixed-tab-3" class="mdl-layout__tab">LEA Users</a>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">SuperAdmin</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="/dashboard">Home</a>
+      <a class="mdl-navigation__link" href="">Reported Queries</a>
+      <a class="mdl-navigation__link" href="/manage_tickets">Manage Tickets</a>
+      <a class="mdl-navigation__link" href="/logout">Logout</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+      <div class="page-content">
+        {% for user in users_data['public'] %}
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="card data">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-2">
+                    <img src="{{ user['photoUrl'] }}" alt="Avatar" class="avatar" />
+                  </div>
+                  <div class="col-5 data-content">
+                    <p class="lead">
+                      {{ user['username'] }}
+                    </p>
+                  </div>
+                  <div class="col-5 data-content">
+                    <p class="lead">{{ user['email'] }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+      <div class="page-content">
+        {% for user in users_data['legal'] %}
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="card data" id="{{ user['_id'] }}">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 data-content">
+                    <p class="lead">
+                      {{ user['_id'] }}
+                    </p>
+                  </div>
+                  <div class="col-4 data-content">
+                    <p class="lead">
+                      {{ user['username'] }}
+                    </p>
+                  </div>
+                  <div class="col-4 data-content">
+                    <div class="mr-auto">
+                      <p class="lead">{{ user['email'] }}</p>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-link" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-lg" style="color: black;"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <button class="dropdown-item" type="button" id="del-{{ user['_id'] }}" name="{{ user['_id'] }}">
+                          Delete User
+                        </button>
+                        <button class="dropdown-item" type="button" id="upd-{{ user['_id'] }}" name="{{ user['_id'] }}">
+                          Update User
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <script>
+          del_but = document.getElementById("del-{{ user['_id'] }}");
+          del_but.onclick = function () {
+            window.open(
+              `/delete_legal/{{ user['_id'] }}`,
+              "_self"
+            );
+          };
+        </script>
+        {% endfor %}
+        <center>
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalCenter"
+            style="margin-top: 10px;">
+            <i class="fa fa-plus-circle fa-4x" style="color: black;"></i>
+          </button>
+        </center>
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="false">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <form action="/register_legal" method="post">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">
+                    Add New Legal
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-label-group">
+                    <label for="inputEmail">Username</label>
+                    <input type="text" id="inputEmail" class="form-control" placeholder="Username" name="username"
+                      required autofocus />
+                  </div>
+
+                  <div class="form-label-group">
+                    <label for="inputEmail">Email</label>
+                    <input type="text" id="inputEmail" class="form-control" placeholder="Email" name="email" required
+                      autofocus />
+                  </div>
+
+                  <div class="form-label-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                      name="password" required />
+                  </div>
+                  <div class="form-label-group">
+                    <label for="inputPassword">Confirm Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password"
+                      name="c_password" required />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Add
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+      <div class="page-content">
+        {{ users_data['lea'] }}
+      </div>
+    </section>
+  </main>
+</div>
+{% endblock %}

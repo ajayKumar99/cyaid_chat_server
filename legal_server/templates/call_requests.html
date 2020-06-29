@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow p-3 mb-5">
+    <a class="navbar-brand" href="#">
+        <h1 class="display-4 texts">Legal Dashboard</h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="mr-auto"></div>
+        <ul class="navbar-nav">
+            <li class="nav-item nav_list_items">
+                <a class="nav-link" href="{{ url_for('auth') }}">Queries <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item nav_list_items">
+                <a class="nav-link" href="{{ url_for('history') }}">History</a>
+            </li>
+            <li class="nav-item active nav_list_items">
+                <a class="nav-link" href="{{ url_for('call_requests') }}">Call Requests</a>
+            </li>
+            <li class="nav-item dropdown nav_list_items">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    {{ user_cred['name'] }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Update Email</a>
+                    <a class="dropdown-item" href="#">Update Password</a>
+                    <a class="dropdown-item" href="#">Write to superadmin</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" style="color: red;" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% for ticket in user_cred["call_requests"]%}
+<div class="row" style="padding: 20px;">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-4">
+                        <center>
+                            <p class="lead">{{ticket["_id"]}}</p>
+                        </center>
+                    </div>
+                    <div class="col-4">
+                        <center>
+                            <p class="lead">{{ticket["username"]}}</p>
+                        </center>
+                    </div>
+                    <div class="col-4">
+                        <center>
+                            <p class="lead">{{ticket["number"]}}</p>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>
+{% endfor %}
+{% endblock %}
